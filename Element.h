@@ -24,46 +24,29 @@ public:
 
     Element(int x, int y, const std::list<Direction> &possibilities, ElementType elementType);
 
-    Element(int x, int y, const std::list<Direction> &possibilities);
+    static Element * createEmptyElement(int x, int y);
 
+    static Element * createSourceElement(int x, int y);
 
-};
+    static Element * createStoneElement(int x, int y);
 
-class Source : public Element{
-public:
-    Source(int x, int y);
+    static Element * createHouseElement(int x, int y);
 
-    friend std::ostream &operator<<(std::ostream &os, const Source &source);
-};
+    static Element * createPipeElement(int x, int y, std::list<Direction> &possibilities);
 
-class Stone : public Element{
-public:
-    Stone(int x, int y);
+    bool isNone();
 
-    friend std::ostream &operator<<(std::ostream &os, const Stone &stone);
-};
+    bool isSource()const;
 
-class House : public Element{
-public:
-    House(int x, int y);
+    bool isStone();
 
-    friend std::ostream &operator<<(std::ostream &os, const House &house);
-};
+    bool isHouse();
 
-class PipeElement : public Element{
-public:
-    PipeElement(int x, int y, const std::list<Direction> &possibilities);
+    bool isPipe()const;
 
-    friend std::ostream &operator<<(std::ostream &os, const PipeElement &element);
-};
+    bool operator==(const Element &rhs) const;
 
-class PipeLocation{
-public:
-    const int x;
-    const int y;
-    const PipeAdjustment pipeAdjustment;
-
-    PipeLocation(int x, int y, PipeAdjustment pipeAdjustment);
+    bool operator!=(const Element &rhs) const;
 };
 
 #endif //COMPILER_TEST_ELEMENT_H

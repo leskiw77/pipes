@@ -29,4 +29,29 @@ enum class Direction {
     LEFT
 };
 
+class PipeLocation{
+public:
+    int x;
+    int y;
+    PipeAdjustment pipeAdjustment;
+
+    PipeLocation(int x, int y, PipeAdjustment pipeAdjustment) : x(x), y(y), pipeAdjustment(pipeAdjustment) {}
+};
+
+class PairDouble{
+public:
+    double x;
+    double y;
+
+    PairDouble(double x, double y) : x(x), y(y) {}
+};
+
+class PairInt{
+public:
+    int x;
+    int y;
+
+    PairInt(int x, int y) : x(x), y(y) {}
+};
+
 #endif //COMPILER_TEST_PIPE_H

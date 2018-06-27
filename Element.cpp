@@ -11,46 +11,74 @@ Element::Element(int x, int y, const std::list<Direction> &possibilities, Elemen
                                                                                                      elementType(
                                                                                                              elementType) {}
 
-Element::Element(int x, int y, const std::list<Direction> &possibilities) : x(x), y(y),
-                                                                            possibilities(possibilities),
-                                                                            elementType(ElementType::None) {}
+Element *Element::createEmptyElement(int x, int y) {
+    return new Element(x, y, {}, ElementType::None);
+}
+
+Element *Element::createSourceElement(int x, int y) {
+    return new Element(x, y, {Direction::LEFT, Direction::DOWN, Direction::RIGHT, Direction::UP}, ElementType::Source);
+}
+
+Element *Element::createStoneElement(int x, int y) {
+    return new Element(x, y, {}, ElementType::Stone);
+}
+
+Element *Element::createHouseElement(int x, int y) {
+    return new Element(x, y, {Direction::LEFT, Direction::DOWN, Direction::RIGHT, Direction::UP}, ElementType::House);
+}
+
+Element *Element::createPipeElement(int x, int y, std::list<Direction> &possibilities) {
+    return new Element(x, y, possibilities, ElementType::Pipe);
+}
 
 std::ostream &operator<<(std::ostream &os, const Element &element) {
-    os << " ";
+
+    switch(element.elementType) {
+        case ElementType::None :
+            os << ' ';
+            break;
+        case ElementType::Source:
+            os << 'O';
+            break;
+        case ElementType::Stone:
+            os << 'S';
+            break;
+        case ElementType::House:
+            os << 'X';
+            break;
+        case ElementType::Pipe:
+            os << '-';
+            break;
+    }
     return os;
 }
 
-Source::Source(int x, int y) : Element(x, y, {Direction::LEFT, Direction::DOWN, Direction::RIGHT, Direction::UP},
-                                       ElementType::Source) {}
-
-Stone::Stone(int x, int y) : Element(x, y, {}, ElementType::Stone) {}
-
-House::House(int x, int y) : Element(x, y, {Direction::LEFT, Direction::DOWN, Direction::RIGHT, Direction::UP},
-                                     ElementType::House) {}
-
-PipeElement::PipeElement(int x, int y, const std::list<Direction> &possibilities) : Element(x, y, possibilities,
-                                                                                            ElementType::Pipe) {}
-
-PipeLocation::PipeLocation(const int x, const int y, const PipeAdjustment pipeAdjustment) : x(x), y(y), pipeAdjustment(
-        pipeAdjustment) {}
-
-std::ostream &operator<<(std::ostream &os, const Source &source) {
-    os << "O";
-    return os;
+bool Element::isNone() {
+    return this->elementType == ElementType::None;
 }
 
-std::ostream &operator<<(std::ostream &os, const Stone &stone) {
-    os << "S";
-    return os;
+bool Element::isSource()const {
+    return this->elementType == ElementType::Source;
 }
 
-std::ostream &operator<<(std::ostream &os, const House &house) {
-    os << "X";
-    return os;
+bool Element::isStone() {
+    return this->elementType == ElementType::Stone;
 }
 
-std::ostream &operator<<(std::ostream &os, const PipeElement &element) {
-    os << "-";
-    return os;
+bool Element::isHouse() {
+    return this->elementType == ElementType::House;
 }
 
+bool Element::isPipe()const {
+    return this->elementType == ElementType::Pipe;
+}
+
+bool Element::operator==(const Element &rhs) const {
+    return x == rhs.x &&
+           y == rhs.y &&
+           elementType == rhs.elementType;
+}
+
+bool Element::operator!=(const Element &rhs) const {
+    return !(rhs == *this);
+}
